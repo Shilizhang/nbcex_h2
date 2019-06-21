@@ -1,0 +1,122 @@
+.nav{
+    .nav_header {
+        height:83px;
+        width:100%;
+        min-width:700px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        background:#0A4399;
+        line-height:84px;
+        padding:0 60px;
+        box-sizing: border-box;
+        .nav_logo {
+            font-size: 36px;
+            font-family:STHupo;
+            font-weight:400;
+            color:white;
+        }
+        .nav_header_right {
+            width:200px;
+            display: flex;
+            justify-content: space-between;
+            color:white;
+            // .nav_more {
+
+            // }
+            .nav_user{
+                .nav_user_img {
+                    width:34px;
+                    height:34px;
+                    background: #666;
+                    border:1px solid white;
+                    border-radius: 17px;
+                    display: inline-block;
+                    position: relative;
+                    top:10px;
+                    margin-right:10px;
+                }
+                .nav_user_name {
+                    font-size: 14px;
+                    cursor:pointer
+                }
+            }
+            .nav_userInfo {
+                display: flex;
+                flex-direction: column;
+                justify-content: start;
+                width: 104px;
+                color:black;
+                position: absolute;
+                right:60px;
+                top:83px;
+                z-index: 99;
+                li{
+                    height:58px;
+                    line-height:58px;
+                    background:white;
+                    text-align: center;
+                    border-bottom:1px solid black;
+                    border-right:1px solid black;
+                    border-left:1px solid black;
+                }
+            }
+        }
+    }
+    .nav_content{
+        position: absolute;
+        top:83px;
+        bottom:0;
+        left:0;
+        right:0;
+        .nav_left {
+            // display: inline-block;
+            position: absolute;
+            top:0px;
+            bottom:0;
+            width:249px;
+            margin:0;
+            background: #0A4399;
+            .ant-layout {
+                width:249px;
+                .ant-menu {
+                    width:249px;
+                    box-sizing: border-box;
+                    background:#1F71EE;
+                    margin-bottom:0;
+                }
+                .ant-menu-item {
+                    height:58px;
+                    margin:0;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                }
+                .ant-menu-item-selected {
+                    background: #0F2E5D;
+                }
+            }
+        }
+        .nav_right {
+            display: inline-block;
+            position: absolute;
+            left: 249px;
+            right:0;
+            padding-left:38px;
+            padding-top:60px;
+            padding-right:40px;
+            
+            .right_title {
+                height:60px;
+                background:#eee;
+                width:100%;
+                font-size:16px;
+                line-height:60px;
+                position: absolute;
+                right: 0px;
+                padding-left: 50px;
+                top:0;
+            }
+        }
+    }
+}
