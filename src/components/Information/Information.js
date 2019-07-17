@@ -69,59 +69,7 @@ class Information extends React.Component {
         searchText: '',
         add:false,
       };   
-
-    getColumnSearchProps = dataIndex => ({
-
-        filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
-        <div style={{padding:"8px"}}>
-                <Input
-                ref={node => {
-                    this.searchInput = node;
-                }}
-                placeholder={`Search ${dataIndex}`}
-                value={selectedKeys[0]}
-                onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
-                onPressEnter={() => this.handleSearch(selectedKeys, confirm)}
-                style={{ width: 188, marginBottom: 8, display: 'block' }}
-                />
-                <Button
-                type="primary"
-                onClick={() => this.handleSearch(selectedKeys, confirm)}
-                icon="search"
-                size="small"
-                style={{ width: 90, marginRight: 8 }}
-                >
-                    搜索
-                </Button>
-                <Button onClick={() => this.handleReset(clearFilters)} size="small" style={{ width: 90 }}>
-                    重置
-                </Button>
-        </div>
-        ),
-        filterIcon: filtered => (
-            <Icon type="search" style={{ color: filtered ? '#1890ff' : undefined }} />
-        ),
-        onFilter: (value, record) =>
-        record[dataIndex]
-            .toString()
-            .toLowerCase()
-            .includes(value.toLowerCase()),
-        onFilterDropdownVisibleChange: visible => {
-            if (visible) {
-                setTimeout(() => this.searchInput.select());
-            }
-        }
-    });
     
-    handleSearch = (selectedKeys, confirm) => {
-        confirm();
-        this.setState({ searchText: selectedKeys[0] });
-    };
-    
-    handleReset = clearFilters => {
-        clearFilters();
-        this.setState({ searchText: '' });
-    };
     
     add = (data)=>{
       this.setState({
@@ -146,13 +94,11 @@ class Information extends React.Component {
               title: '标题',
               dataIndex: 'id',
               key: 'id',
-              ...this.getColumnSearchProps('id'),
             },
             {
               title: '公告状态',
               dataIndex: 'status',
               key: 'status',
-              ...this.getColumnSearchProps('status'),
             },
             {
               title: '更新时间',
@@ -184,7 +130,6 @@ class Information extends React.Component {
                 {this.state.add? <Editor value = {this.state} add={this.add.bind(this)} />:<div>
                   <div className= "Information_option">
                     <button onClick= {()=>this.add(true)}>公告发布</button>
-                    <button>公告预览</button>
                     <button>删除</button>
                   </div>
                   <div className = "right_title">当前位置: 资讯管理</div>                

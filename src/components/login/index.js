@@ -7,6 +7,13 @@ import vcodeImg from './img/yanzhengma.png'
 import { Link } from 'react-router-dom';
 
 class Login extends React.Component {
+    constructor(){
+        super()
+    }
+    onSubmit = ()=> {
+        localStorage.setItem("token","12123123")
+        this.props.history.push('/home')
+    }
     render(){
         return(
             <div className= "login">
@@ -27,9 +34,7 @@ class Login extends React.Component {
                         <span className= "login_codeImg">1234</span>
                         <u className= "login_change">看不清楚换一张</u>
                     </div>
-                    <button className= "login_submit">
-                        <Link to={{ pathname: '/home' }}>登录</Link>
-                    </button>
+                    <button className= "login_submit" onClick= {this.onSubmit}>登录</button>
                 </div>
                 <div className= "login_bottom">@1995-2004</div>
             </div>

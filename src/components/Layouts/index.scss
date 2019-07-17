@@ -79,21 +79,40 @@
             background: #0A4399;
             .ant-layout {
                 width:249px;
-                .ant-menu {
+                ul {
                     width:249px;
                     box-sizing: border-box;
                     background:#1F71EE;
                     margin-bottom:0;
                 }
-                .ant-menu-item {
+                li {
+                    position: relative;
                     height:58px;
                     margin:0;
                     display: flex;
                     justify-content: space-between;
                     align-items: center;
-                }
-                .ant-menu-item-selected {
-                    background: #0F2E5D;
+                    a{
+                        padding-left: 20px; 
+                        position: absolute;
+                        left: 0;
+                        right:0;
+                        display: inline-block;
+                        height:58px;
+                        margin:0;
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        color:white;
+                    }
+                    i {
+                        position: absolute;
+                        right:10px;
+                        color:white
+                    }
+                    .actived {
+                        background: #0F2E5D;
+                    }
                 }
             }
         }

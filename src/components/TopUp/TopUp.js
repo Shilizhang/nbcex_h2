@@ -1,54 +1,8 @@
 import React from 'react';
 import './TopUp.scss'
 import { Table, Input, Button, Icon, Select } from 'antd';
+import ExportJsonExcel from 'js-export-excel';
 const { Option } = Select;
-
-const data = [
-    {
-      key: '1',
-      id: '123123123123132',
-      email: '32323232@123.com',
-      phone:"12345678901",
-      name: 'BTC',
-      address:"BTC128658889857",
-      time:"2019-1-1",
-      num:"123456789",
-      orderID:`123456789415`
-    },
-    {
-      key: '2',
-      id: '456456456456456',
-      email: '32323232@123.com',
-      phone:"12345678902",
-      name: 'BTC',
-      address:"BTC128658889857",
-      time:"2019-1-1",
-      num:"123456789",
-      orderID:`123456789415`
-    },
-    {
-      key: '3',
-      id: '789789789789789',
-      email: '32323232@123.com',
-      phone:"12345678903",
-      name: 'BTC',
-      address:"BTC128658889857",
-      time:"2019-1-1",
-      num:"123456789",
-      orderID:`123456789415`
-    },
-    {
-      key: '4',
-      id: '156156156156156',
-      email: '32323232@123.com',
-      phone:"12345678904",
-      name: 'BTC',
-      address:"BTC128658889857",
-      time:"2019-1-1",
-      num:"123456789",
-      orderID:`123456789415`
-    },
-  ];
   //序号
   const rowSelection = {
       
@@ -62,67 +16,131 @@ const data = [
   };
 class TopUp extends React.Component {
     state = {
-        searchText: '',
-        searchValue: '邮箱',
+      searchText: '',
+      searchType:'',
+      searchPlaceholder:'',
+      tableData: [
+        {
+          key: '1',
+          id: '123123123123132',
+          email: '32323232@123.com',
+          phone:"12345678901",
+          name: 'BTC',
+          address:"BTC128658889857",
+          time:"2019-1-1",
+          num:"123456789",
+          orderID:`123456789415`
+        },
+        {
+          key: '2',
+          id: '456456456456456',
+          email: '32323232@123.com',
+          phone:"12345678902",
+          name: 'BTC',
+          address:"BTC128658889857",
+          time:"2019-1-1",
+          num:"123456789",
+          orderID:`123456789415`
+        },
+        {
+          key: '3',
+          id: '789789789789789',
+          email: '32323232@123.com',
+          phone:"12345678903",
+          name: 'BTC',
+          address:"BTC128658889857",
+          time:"2019-1-1",
+          num:"123456789",
+          orderID:`123456789415`
+        },
+        {
+          key: '4',
+          id: '156156156156156',
+          email: '32323232@123.com',
+          phone:"12345678904",
+          name: 'BTC',
+          address:"BTC128658889857",
+          time:"2019-1-1",
+          num:"123456789",
+          orderID:`123456789415`
+        },
+      ],
+      searchData: '',
+      exportData:[]
       };   
+      //序号
+      rowSelection = {
+        onChange: (selectedRowKeys, selectedRows) => {
+          console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+          this.setState({exportData: selectedRows})
+        },
+        // getCheckboxProps: record => ({
+        //   disabled: record.name === 'Disabled User', // Column configuration not to be checked
+        //   name: record.name,
+        // }),
+      };
 
-    getColumnSearchProps = dataIndex => ({
 
-        filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
-        <div style={{padding:"8px"}}>
-                <Input
-                ref={node => {
-                    this.searchInput = node;
-                }}
-                placeholder={`Search ${dataIndex}`}
-                value={selectedKeys[0]}
-                onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
-                onPressEnter={() => this.handleSearch(selectedKeys, confirm)}
-                style={{ width: 188, marginBottom: 8, display: 'block' }}
-                />
-                <Button
-                type="primary"
-                onClick={() => this.handleSearch(selectedKeys, confirm)}
-                icon="search"
-                size="small"
-                style={{ width: 90, marginRight: 8 }}
-                >
-                    搜索
-                </Button>
-                <Button onClick={() => this.handleReset(clearFilters)} size="small" style={{ width: 90 }}>
-                    重置
-                </Button>
-        </div>
-        ),
-        filterIcon: filtered => (
-            <Icon type="search" style={{ color: filtered ? '#1890ff' : undefined }} />
-        ),
-        onFilter: (value, record) =>
-        record[dataIndex]
-            .toString()
-            .toLowerCase()
-            .includes(value.toLowerCase()),
-        onFilterDropdownVisibleChange: visible => {
-            if (visible) {
-                setTimeout(() => this.searchInput.select());
+      //修改搜索种类 和 显示的种类(中文)
+      onChange = (value)=>{
+        this.setState({
+          searchType:`${value.key}`,
+          searchPlaceholder: `${value.label}`,
+        })
+      }
+      // 修改搜索值
+      ChangeSearchVal = (e)=> {
+        this.setState({
+          searchText:e.target.value
+        })
+      }
+      //搜索
+      search = ()=>{
+        let type = this.state.searchType || 'email'
+        let text = this.state.searchText
+        let data = []
+        this.state.tableData.map((item)=>{
+          if(item[type].indexOf(text) > -1){
+            data.push(item)
+          }
+        })
+        this.setState({searchData: data})
+      }
+
+      //导出功能
+      downloadExcel = () => {
+        const data = this.state.exportData ? this.state.exportData : '';//表格数据
+          var option={};
+          let dataTable = [];
+          if (data) {
+            for (let i in data) {
+              if(data){
+                let obj = {
+                  '身份证号码': data[i].id,
+                  '邮箱号': data[i].email,
+                  '手机号码': data[i].phone,
+                  '充币名称': data[i].name,
+                  '转入钱包地址': data[i].address,
+                  '充币时间': data[i].time,
+                  '转入个数': data[i].num,
+                  '交易订单号': data[i].orderID,
+                }
+                dataTable.push(obj);
+              }
             }
+          }
+          option.fileName = '充值管理'
+          option.datas=[
+            {
+              sheetData:dataTable,
+              sheetName:'sheet',
+              sheetFilter:['身份证号码','邮箱号','手机号码','充币名称','转入钱包地址','充币时间','转入个数','交易订单号'],
+              sheetHeader:['身份证号码','邮箱号','手机号码','充币名称','转入钱包地址','充币时间','转入个数','交易订单号'],
+            }
+          ];
+          var toExcel = new ExportJsonExcel(option); 
+          toExcel.saveExcel(); 
         }
-    });
-    
-    handleSearch = (selectedKeys, confirm) => {
-        confirm();
-        this.setState({ searchText: selectedKeys[0] });
-    };
-    
-    handleReset = clearFilters => {
-        clearFilters();
-        this.setState({ searchText: '' });
-    };
-    onChange = (value) =>{
-      this.setState({
-        searchValue:`${value}`
-      })
-    }
     render(){
         const columns = [
             {
@@ -139,13 +157,11 @@ class TopUp extends React.Component {
               title: '邮箱号',
               dataIndex: 'email',
               key: 'email',
-              ...this.getColumnSearchProps('email'),
             },
             {
               title: '手机号',
               dataIndex: 'phone',
               key: 'phone',
-              ...this.getColumnSearchProps('phone'),
             },
             {
               title: '充币名称',
@@ -191,10 +207,10 @@ class TopUp extends React.Component {
                 <div className= "search_header">
                   <div className= "search_header_left">
                     <Select
+                      labelInValue
                       style={{ width: 200 }}
-                      placeholder="Select a person"
                       onChange={this.onChange}
-                      defaultValue="邮箱"
+                      defaultValue= {{ key: 'email' }}
                       >
                       {/* optionFilterProp="children"
                       onFocus={onFocus}
@@ -203,27 +219,27 @@ class TopUp extends React.Component {
                       filterOption={(input, option) =>
                         option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                       } */}
-                      <Option value="邮箱">邮箱</Option>
-                      <Option value="手机号">手机号</Option>
-                      <Option value="真实姓名">真实姓名</Option>
-                      <Option value="充币名称">充币名称</Option>
-                      <Option value="转入地址">转入地址</Option>
-                      <Option value="充币时间">充币时间</Option>
+                      <Option value="email">邮箱</Option>
+                      <Option value="phone">手机号</Option>
+                      {/* <Option value="真实姓名">真实姓名</Option> */}
+                      <Option value="name">充币名称</Option>
+                      <Option value="address">转入地址</Option>
+                      <Option value="time">充币时间</Option>
                     </Select>
-                    <input type= "text" placeholder= {this.state.searchValue}/>
-                    <button className= "search_button"><Icon type="search" /></button>
+                    <input ref= "search_input" type= "text" placeholder= {this.state.searchPlaceholder || '邮箱'} onChange= {this.ChangeSearchVal}/>
+                    <button className= "search_button" onClick={this.search}><Icon type="search" /></button>
                   </div>
                   <div className= "search_header_right">
-                    <button>导出</button>
+                    <button onClick = {this.downloadExcel}>导出</button>
                   </div>
                 </div>
 
                 <div className= "topup_table">
-                    <Table rowSelection={rowSelection}  columns={columns} dataSource={data} pagination={paginationProps} />
+                    <Table rowSelection={this.rowSelection}  columns={columns} dataSource={this.state.searchData || this.state.tableData} pagination={paginationProps} />
                 </div>
                 {/* <button onClick= {()=>{}}>测试测试测试</button> */}
             </div>
         )
     }
 }
-export default TopUp
+export default TopUp 

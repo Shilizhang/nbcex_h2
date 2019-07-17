@@ -9,7 +9,7 @@
                     border: 1px solid black;
                     height:45px;
                     line-height:45px;
-                    span {
+                    .editorTitle {
                         display: inline-block;
                         width:30%;
                     }
@@ -52,6 +52,70 @@
                     font-size: 16px;
                     font-weight: bold;
                 }
+            }
+        }
+    }
+    .preview {
+        width:1590px;
+        height:705px;
+        border:1px solid black;
+        border-radius: 10px;
+        padding: 50px;
+        position: relative;
+        .previewHeader {
+            height:30px;
+            float: right;
+            span {
+                display: inline-block;
+                margin-right: 20px;
+            }
+        }
+        h5 {
+            width: 100%;
+            text-align: center;
+            margin-top: 30px;
+            font-size:26px;
+            font-family:MicrosoftYaHei;
+            font-weight:400;
+            color:rgba(0,0,0,1);
+            line-height:60px;
+        }
+        .hiddenScroll {
+            overflow: hidden;
+            width:1460px;
+            // height:520px;
+            .previewCenter {
+                width:1480px;
+                height:500px;
+                top: 150px;
+                font-size:20px;
+                font-family:MicrosoftYaHei;
+                font-weight:400;
+                color:rgba(0,0,0,1);
+                line-height:36px;
+                overflow-y: scroll;
+                border-bottom: 1px solid rgba($color: #000000, $alpha: .1)
+            }
+        }
+        .previewFooter {
+            position: absolute;
+            width: 1480px;
+            height:50px;
+            bottom: 0;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            button {
+                width:110px;
+                height:35px;
+                background:rgba(31,113,238,1);
+                border-radius:10px;
+                border:none;
+                line-height: 35px;
+                margin-right: 10px;
+                cursor: pointer;
+                color:white;
+                outline:none;
             }
         }
     }

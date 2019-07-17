@@ -1,127 +1,135 @@
 import React from 'react';
-import { Table, Input, Button, Icon,Select } from 'antd';
+import { Table, Input, Button, Icon,Select, Switch } from 'antd';
+import ExportJsonExcel from 'js-export-excel';
 import './UserInfo.scss'
+
 const { Option } = Select;
-const data = [
-    {
-      key: '1',
-      id: '123123123123132',
-      email: '32323232@123.com',
-      phone:"12345678901",
-      time:"2019-1-1",
-      certification:"是",
-      name: '123',
-      operation:`switch`
-    },
-    {
-      key: '2',
-      id: '456456456456456',
-      email: '32323232@123.com',
-      phone:"12345678902",
-      time:"2019-1-1",
-      certification:"是",
-      name: '456',
-      operation:`switch`
-    },
-    {
-      key: '3',
-      id: '789789789789789',
-      email: '32323232@123.com',
-      phone:"12345678903",
-      time:"2019-1-1",
-      certification:"是",
-      name: '789',
-      operation:`switch`
-    },
-    {
-      key: '4',
-      id: '156156156156156',
-      email: '32323232@123.com',
-      phone:"12345678904",
-      time:"2019-1-1",
-      certification:"是",
-      name: '101',
-      operation:`switch`
-    },
-  ];
-  //序号
-  const rowSelection = {
-    onChange: (selectedRowKeys, selectedRows) => {
-      console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-    },
-    getCheckboxProps: record => ({
-      disabled: record.name === 'Disabled User', // Column configuration not to be checked
-      name: record.name,
-    }),
-  };
+  
 class UserInfo extends React.Component {
     state = {
         searchText: '',
-        searchValue:'邮箱',
-      };    
-      getColumnSearchProps = dataIndex => ({
-        filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
-            
-          <div style={{padding:"8px"}}>
-                <Input
-                ref={node => {
-                    this.searchInput = node;
-                }}
-                placeholder={`Search ${dataIndex}`}
-                value={selectedKeys[0]}
-                onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
-                onPressEnter={() => this.handleSearch(selectedKeys, confirm)}
-                style={{ width: 188, marginBottom: 8, display: 'block' }}
-                />
-                <Button
-                type="primary"
-                onClick={() => this.handleSearch(selectedKeys, confirm)}
-                icon="search"
-                size="small"
-                style={{ width: 90, marginRight: 8 }}
-                >
-                    搜索
-                </Button>
-                <Button onClick={() => this.handleReset(clearFilters)} size="small" style={{ width: 90 }}>
-                    重置
-                </Button>
-          </div>
-        ),
-        filterIcon: filtered => (
-            <Icon type="search" style={{ color: filtered ? '#1890ff' : undefined }} />
-        ),
-        onFilter: (value, record) =>
-          record[dataIndex]
-            .toString()
-            .toLowerCase()
-            .includes(value.toLowerCase()),
-        onFilterDropdownVisibleChange: visible => {
-          if (visible) {
-            setTimeout(() => this.searchInput.select());
-          }
-        }
-      });
-    
-      handleSearch = (selectedKeys, confirm) => {
-        console.log(selectedKeys)
-        console.log(confirm)
-        // confirm();
-        this.setState({ searchText: selectedKeys[0] });
+        searchType:'',
+        searchPlaceholder:'',
+        tableData: [
+          {
+            key: '1',
+            id: '123123123123132',
+            email: '32323232@123.com',
+            phone:"12345678901",
+            time:"2019-1-1",
+            certification:"是",
+            name: '123',
+            operation:1
+          },
+          {
+            key: '2',
+            id: '456456456456456',
+            email: '32323232@123.com',
+            phone:"12345678902",
+            time:"2019-1-1",
+            certification:"是",
+            name: '456',
+            operation:1
+          },
+          {
+            key: '3',
+            id: '789789789789789',
+            email: '32323232@123.com',
+            phone:"12345678903",
+            time:"2019-1-1",
+            certification:"是",
+            name: '789',
+            operation:0
+          },
+          {
+            key: '4',
+            id: '156156156156156',
+            email: '32323232@123.com',
+            phone:"12345678904",
+            time:"2019-1-1",
+            certification:"是",
+            name: '101',
+            operation:1
+          },
+        ],
+        searchData: '',
+        exportData:[]
       };
-    
-      handleReset = clearFilters => {
-        clearFilters();
-        this.setState({ searchText: '' });
+      //序号
+      rowSelection = {
+        onChange: (selectedRowKeys, selectedRows) => {
+          console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+          this.setState({exportData: selectedRows})
+        },
+        // getCheckboxProps: record => ({
+        //   disabled: record.name === 'Disabled User', // Column configuration not to be checked
+        //   name: record.name,
+        // }),
       };
-    
+
+
+      //修改搜索种类 和 显示的种类(中文)
       onChange = (value)=>{
         this.setState({
-          searchValue:`${value}`
+          searchType:`${value.key}`,
+          searchPlaceholder: `${value.label}`,
         })
       }
-      search = (id,val)=>{
-        this.handleSearch(["123123"])
+      // 修改搜索值
+      ChangeSearchVal = (e)=> {
+        this.setState({
+          searchText:e.target.value
+        })
       }
+      //搜索
+      search = ()=>{
+        let type = this.state.searchType || 'email'
+        let text = this.state.searchText
+        let data = []
+        this.state.tableData.map((item)=>{
+          if(item[type].indexOf(text) > -1){
+            data.push(item)
+          }
+        })
+        this.setState({searchData: data})
+      }
+
+      //导出功能
+      downloadExcel = () => {
+        const data = this.state.exportData ? this.state.exportData : '';//表格数据
+          var option={};
+          let dataTable = [];
+          if (data) {
+            for (let i in data) {
+              if(data){
+                let obj = {
+                  '身份证号码': data[i].id,
+                  '邮箱号': data[i].email,
+                  '手机号码': data[i].phone,
+                  '注册时间': data[i].time,
+                  '实名认证': data[i].certification,
+                  '真实姓名': data[i].name,
+                }
+                dataTable.push(obj);
+              }
+            }
+          }
+          option.fileName = '用户管理'
+          option.datas=[
+            {
+              sheetData:dataTable,
+              sheetName:'sheet',
+              sheetFilter:['身份证号码','邮箱号','手机号码','注册时间','实名认证','真实姓名'],
+              sheetHeader:['身份证号码','邮箱号','手机号码','注册时间','实名认证','真实姓名'],
+            }
+          ];
+          var toExcel = new ExportJsonExcel(option); 
+          toExcel.saveExcel(); 
+        }
+
+        freeze= (checked, event)=>{
+          console.log(checked,event)
+        }
     render(){
         const columns = [
             {
@@ -138,13 +146,11 @@ class UserInfo extends React.Component {
               title: '邮箱号',
               dataIndex: 'email',
               key: 'email',
-              ...this.getColumnSearchProps('email'),
             },
             {
               title: '手机号码',
               dataIndex: 'phone',
               key: 'phone',
-              ...this.getColumnSearchProps('phone'),
             },
             {
               title: '注册时间',
@@ -165,8 +171,17 @@ class UserInfo extends React.Component {
                 title: '操作',
                 dataIndex: 'operation',
                 key: 'operation',
+                render: (v)=>{
+                  if(v){
+                    return <Switch checkedChildren="冻结" unCheckedChildren="解冻" defaultChecked onChange = {(checked,event)=>{this.freeze(checked, event)}} />
+                  }else {
+                    return <Switch checkedChildren="冻结" unCheckedChildren="解冻" />
+                  }
+                }
             }
           ];
+
+
 
         const paginationProps = {
             // showSizeChanger: true,
@@ -187,9 +202,10 @@ class UserInfo extends React.Component {
                   <div className= "search_header_left">
                     <Select
                       style={{ width: 200 }}
+                      labelInValue
                       placeholder="Select a person"
                       onChange={this.onChange}
-                      defaultValue="邮箱"
+                      defaultValue= {{ key: 'email' }}
                       >
                       {/* optionFilterProp="children"
                       onFocus={onFocus}
@@ -198,19 +214,19 @@ class UserInfo extends React.Component {
                       filterOption={(input, option) =>
                         option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                       } */}
-                      <Option value="邮箱">邮箱</Option>
-                      <Option value="手机号">手机号</Option>
+                      <Option value="email" >邮箱</Option>
+                      <Option value="phone" >手机号</Option>
                     </Select>
-                    <input ref= "search_input" type= "text" placeholder= {this.state.searchValue}/>
-                    <button className= "search_button" onClick={()=>{this.search("phone","123123")}}><Icon type="search" /></button>
+                    <input ref= "search_input" type= "text" placeholder= {this.state.searchPlaceholder || '邮箱'} onChange= {this.ChangeSearchVal}/>
+                    <button className= "search_button" onClick={this.search}><Icon type="search" /></button>
                   </div>
                   <div className= "search_header_right">
-                    <button>导出</button>
+                    <button onClick = {this.downloadExcel}>导出</button>
                     <button>删除</button>
                   </div>
                 </div>
                 <div className= "userinfo_table">
-                    <Table rowSelection={rowSelection}  columns={columns} dataSource={data} pagination={paginationProps} />
+                    <Table rowSelection={this.rowSelection}  columns={columns} dataSource={this.state.searchData || this.state.tableData} pagination={paginationProps} />
                 </div>
                 {/* <div className= "userinfo_tabledata">
                     当前第1/66页  共666条记录   每页10条
