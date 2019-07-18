@@ -6,7 +6,10 @@ import '../css/search.scss'
 import { Layout, Menu, Icon, Dropdown } from 'antd';
 import routes from '../../router/routes'
 import Login from '../login/index'
+import Cookies from 'js-cookie'
+
 const { Header, Sider, Content } = Layout;
+@withRouter
 class Sidenav extends React.Component {
     state = {
         collapsed: false,
@@ -14,13 +17,13 @@ class Sidenav extends React.Component {
         Islogin:false,
     };
     componentDidMount(){
-        console.log(localStorage.getItem('token'))
-        if(localStorage.getItem('token')){
-            this.setState({Islogin:true,})
+        if(!Cookies.get('token')){
+            this.props.history.push("/login")    
         }
     }
     logout = ()=> {
-        
+        Cookies.remove("token")
+        this.props.history.push("/login")
     }
     render(){
         const menu = (
@@ -41,13 +44,14 @@ class Sidenav extends React.Component {
                 {/* <a target="_blank" rel="noopener noreferrer">
                     退出登录
                 </a> */}
-                <button onClick= {this.logout} >退出登录</button>
+                <div onClick= {this.logout} >退出登录</div>
 
               </Menu.Item>
             </Menu>)
         return(
             <div className= "nav">
-                <div style = {{display:this.state.Islogin?'block':'none' }}>
+                {this.props.location.pathname !== "/login"?
+                <div>
                 <div className= "nav_header">
                     <div className= "nav_logo">logo</div>
                     <div className= "nav_header_right">
@@ -69,36 +73,6 @@ class Sidenav extends React.Component {
                         <Layout width= "260px">
                             <Sider trigger={null} collapsible collapsed={this.state.collapsed}>
                                 <div className="logo" />
-                                {/* <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
-                                    <Menu.Item key="1">
-                                        <Link to= {{pathname: '/home'}}   >系统首页</Link>
-                                        <Icon type= "down" />
-                                    </Menu.Item>
-                                    <Menu.Item key="2">
-                                        <Link to= {{pathname: '/userinfo'}} >用户管理</Link>
-                                        <Icon type= "down" />
-                                    </Menu.Item>
-                                    <Menu.Item key="3">
-                                        <Link to= {{pathname: '/topup'}} >充值管理</Link>                                    
-                                        <Icon type= "down" />
-                                    </Menu.Item>
-                                    <Menu.Item key="4">
-                                        <Link to= {{pathname: '/MentionMoney'}} >提币管理</Link>                                    
-                                        <Icon type= "down" />
-                                    </Menu.Item>
-                                    <Menu.Item key="5">
-                                        <Link to= {{pathname: '/currency'}} >币种交易参数设置</Link>                                    
-                                        <Icon type= "down" />
-                                    </Menu.Item>
-                                    <Menu.Item key="6">
-                                        <Link to= {{pathname: '/information'}} >资讯管理</Link>
-                                        <Icon type= "down" />
-                                    </Menu.Item>
-                                    <Menu.Item key="7">
-                                        <Link to= {{pathname: '/superuser'}} >超级用户管理</Link>
-                                        <Icon type= "down" />
-                                    </Menu.Item>
-                                </Menu> */}
                                 <ul>
                                     <li>
                                         <NavLink to= {{pathname: '/home'}}  activeClassName= 'actived' >系统首页</NavLink>
@@ -138,7 +112,7 @@ class Sidenav extends React.Component {
                         )}
                     </div>
                 </div>
-                </div>}
+                </div>:<Route path="/login" component={Login} />}
             </div>
         )
     }

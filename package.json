@@ -37,6 +37,7 @@
     "jest-resolve": "24.7.1",
     "jest-watch-typeahead": "0.3.0",
     "jquery": "^3.4.1",
+    "js-cookie": "^2.2.0",
     "js-export-excel": "^1.1.2",
     "mini-css-extract-plugin": "0.5.0",
     "node-sass": "^4.12.0",
@@ -53,6 +54,7 @@
     "react-datatable-jq": "^2.0.0",
     "react-dev-utils": "^9.0.1",
     "react-dom": "^16.8.6",
+    "react-router-dom": "^5.0.1",
     "reset-css": "^4.0.1",
     "resolve": "1.10.0",
     "sass-loader": "7.1.0",
@@ -87,7 +89,7 @@
     ]
   },
   "devDependencies": {
-    "react-router-dom": "^5.0.1"
+    "@babel/plugin-proposal-decorators": "^7.4.4"
   },
   "jest": {
     "collectCoverageFrom": [
@@ -135,6 +137,14 @@
     ]
   },
   "babel": {
+    "plugins": [
+      [
+        "@babel/plugin-proposal-decorators",
+        {
+          "legacy": true
+        }
+      ]
+    ],
     "presets": [
       "react-app"
     ]

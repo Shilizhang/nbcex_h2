@@ -1,17 +1,16 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import './index.scss'
 import uesrImg from './img/yonghu.png'
 import pwdImg from './img/mima.png'
 import vcodeImg from './img/yanzhengma.png'
-import { Link } from 'react-router-dom';
+import Cookies from 'js-cookie'
 
 class Login extends React.Component {
     constructor(){
         super()
     }
     onSubmit = ()=> {
-        localStorage.setItem("token","12123123")
+        Cookies.set("token","12123123")
         this.props.history.push('/home')
     }
     render(){
@@ -28,12 +27,12 @@ class Login extends React.Component {
                         <img src= {pwdImg} />
                         <input className= "login_pwd" type= "password" placeholder = "密码" />
                     </div>
-                    <div>
+                    {/* <div>
                         <img src= {vcodeImg} />
                         <input className= "login_code" type= "text" placeholder = "验证码" />
                         <span className= "login_codeImg">1234</span>
                         <u className= "login_change">看不清楚换一张</u>
-                    </div>
+                    </div> */}
                     <button className= "login_submit" onClick= {this.onSubmit}>登录</button>
                 </div>
                 <div className= "login_bottom">@1995-2004</div>
