@@ -235,7 +235,7 @@ class TopUp extends React.Component {
                 </div>
 
                 <div className= "topup_table">
-                    <Table rowSelection={this.rowSelection}  columns={columns} dataSource={this.state.searchData || this.state.tableData} pagination={paginationProps} />
+                    <Table bordered rowSelection={this.rowSelection}  columns={columns} dataSource={this.state.searchData || this.state.tableData} pagination={paginationProps} />
                 </div>
                 {/* <button onClick= {()=>{}}>测试测试测试</button> */}
             </div>

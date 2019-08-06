@@ -226,7 +226,7 @@ class UserInfo extends React.Component {
                   </div>
                 </div>
                 <div className= "userinfo_table">
-                    <Table rowSelection={this.rowSelection}  columns={columns} dataSource={this.state.searchData || this.state.tableData} pagination={paginationProps} />
+                    <Table bordered rowSelection={this.rowSelection}  columns={columns} dataSource={this.state.searchData || this.state.tableData} pagination={paginationProps} />
                 </div>
                 {/* <div className= "userinfo_tabledata">
                     当前第1/66页  共666条记录   每页10条

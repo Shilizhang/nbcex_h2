@@ -256,6 +256,8 @@ class MentionMoney extends React.Component {
             <Modal
               title="待审核提币"
               centered
+              cancelText="取消"
+              okText="确认"
               visible={this.state.modal2Visible}
               onOk={() => this.setModal2Visible(false)}
               onCancel={() => this.setModal2Visible(false)}
@@ -266,7 +268,7 @@ class MentionMoney extends React.Component {
             </Modal>
 
             <div className= "MentionMoney_table">
-                    <Table rowSelection={this.rowSelection}  columns={columns} dataSource={this.state.searchData || this.state.tableData} pagination={paginationProps} />
+                    <Table bordered rowSelection={this.rowSelection}  columns={columns} dataSource={this.state.searchData || this.state.tableData} pagination={paginationProps} />
             </div>
             {/* <div className= "MentionMoney_tabledata">
                 当前第1/66页  共666条记录   每页10条

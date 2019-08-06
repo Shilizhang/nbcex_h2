@@ -41,11 +41,12 @@
         }
     }
     .home_content {
+        width:1590px;
         display: flex;
         justify-content: space-between;
         .home_type,.home_volume {
             width: 780px;
-            height: 630px;
+            height: 610px;
             border:1px solid black;
         }
     }

@@ -1,6 +1,10 @@
 .topup{
-    .topup_tabledata {
-        position: relative;
-        bottom:40px;
+    .topup_table {
+        table {
+            text-align: center;
+            th {
+                text-align: center;
+            }
+        }
     }
 }

@@ -134,7 +134,7 @@ class Information extends React.Component {
                   </div>
                   <div className = "right_title">当前位置: 资讯管理</div>                
                   <div className= "Information_table">
-                      <Table rowSelection={rowSelection}  columns={columns} dataSource={data} pagination={paginationProps}  />
+                      <Table bordered rowSelection={rowSelection}  columns={columns} dataSource={data} pagination={paginationProps}  />
                   </div>
                   <div className= "Information_tabledata">
                       当前第1/66页  共666条记录   每页10条

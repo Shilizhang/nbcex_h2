@@ -161,7 +161,7 @@ class Currency extends React.Component {
             // })
         };
         return(
-            <div>
+            <div className = "currency">
                 <div className = "right_title">当前位置: 币种交易参数设置</div>
                 <div className= "search_header">
                   <div className= "search_header_left">
@@ -189,7 +189,7 @@ class Currency extends React.Component {
                   </div>
                 </div>
                   <div className= "currency_table">
-                    <Table rowSelection={this.rowSelection}  columns={columns} dataSource={this.state.searchData || this.state.tableData} pagination={paginationProps} />
+                    <Table bordered rowSelection={this.rowSelection}  columns={columns} dataSource={this.state.searchData || this.state.tableData} pagination={paginationProps} />
                     {/* <div className= "userinfo_tabledata">
                         当前第1/66页  共666条记录   每页10条
                     </div> */}

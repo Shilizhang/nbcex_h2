@@ -1,14 +1,18 @@
 .userinfo {
     .userinfo_table {
-        // position: relative;
-        // bottom:45px;
-        td {
-            .ant-switch {
-                background-color: #E3505E
-
+        table {
+            text-align: center;
+            th {
+                text-align: center;
             }
-            .ant-switch-checked {
-                background-color: #5BDC94
+            td {
+                .ant-switch {
+                    background-color: #E3505E
+    
+                }
+                .ant-switch-checked {
+                    background-color: #5BDC94
+                }
             }
         }
     }
